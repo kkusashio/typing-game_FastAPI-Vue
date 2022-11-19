@@ -14,7 +14,7 @@ docker-compose up
 
 （あまり美しくないため、他にいい方法がないか模索）
 ```
-docker exec {api_containerのid} python -m api.db_migration
+docker exec {api_containerのid} python -m api.migrate_db
 ```
 
 ここまで実行すると、ホストマシンの8000番ポートにAPIサーバが開かれる。
