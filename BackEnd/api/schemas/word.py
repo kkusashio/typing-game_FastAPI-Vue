@@ -13,6 +13,8 @@ class WordCreate(BaseModel):
     Japanese_word: str = Field(..., regex=r"^[ぁ-んァ-ン一-龥]+$", example="こんにちは", description="日本語訳")
     level: int = Field(..., ge=1, le=5, example=1, description="英単語のレベル")
 
+class WordCreateResponse(WordCreate):
+    id: int
+
     class Config:
         orm_mode = True
-

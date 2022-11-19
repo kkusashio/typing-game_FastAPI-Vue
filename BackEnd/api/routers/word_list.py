@@ -1,22 +1,33 @@
 from typing import List
 from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy.ext.asyncio import AsyncSession
 
+from api.db import get_db
 import api.schemas.word as word_schema
+import api.cruds.word as word_crud
 
 router = APIRouter()
 
 @router.get("/word_list", response_model=List[word_schema.Word])
-async def get_word_list():
-    return [word_schema.Word(id=1, English_word="hello", Japanese_word="こんにちは", level=1),word_schema.Word(id=2, English_word="goodbye", Japanese_word="さようなら", level=2)]
+async def get_word_list(db: AsyncSession = Depends(get_db)):
+    return await word_crud.get__all_word(db)
 
-@router.post("/word_list", response_model=word_schema.Word)
-async def create_word(word_data: word_schema.WordCreate):
-    return word_schema.Word(id=1, **word_data.dict())
+@router.post("/word_list", response_model=word_schema.WordCreateResponse)
+async def create_word(word_data: word_schema.WordCreate, db: AsyncSession = Depends(get_db)):
+    return await word_crud.create_word(db, word_data)
 
-@router.put("/word_list/{word_id}", response_model=word_schema.Word)
-async def update_word(word_id: int, word_data: word_schema.WordCreate):
-    return word_schema.Word(id=word_id, **word_data.dict())
+@router.put("/word_list/{word_id}", response_model=word_schema.WordCreateResponse)
+async def update_word(word_id: int, word_data: word_schema.WordCreate, db: AsyncSession = Depends(get_db)):
+    word = await word_crud.get_word(db, word_id)
+    if not word:
+        raise HTTPException(status_code=404, detail="Word not found")
+
+    return await word_crud.update_word(db, word_id, word_data)
 
 @router.delete("/word_list/{word_id}", response_model=None)
-async def delete_word(word_id: int):
-    return
+async def delete_word(word_id: int, db: AsyncSession = Depends(get_db)):
+    word = await word_crud.get_word(db, word_id)
+    if not word:
+        raise HTTPException(status_code=404, detail="Word not found")
+
+    return await word_crud.delete_word(db, word_id)
