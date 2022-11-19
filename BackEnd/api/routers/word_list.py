@@ -7,7 +7,7 @@ router = APIRouter()
 
 @router.get("/word_list", response_model=List[word_schema.Word])
 async def get_word_list():
-    return [word_schema.Word(id=1, English_word="hello", Japanese_word="こんにちは", level=1)]
+    return [word_schema.Word(id=1, English_word="hello", Japanese_word="こんにちは", level=1),word_schema.Word(id=2, English_word="goodbye", Japanese_word="さようなら", level=2)]
 
 @router.post("/word_list", response_model=word_schema.Word)
 async def create_word(word_data: word_schema.WordCreate):
