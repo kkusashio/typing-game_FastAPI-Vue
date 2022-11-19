@@ -36,16 +36,16 @@ http://127.0.0.1:8000/docs にアクセスすると、それぞれのAPIの動�
 [
   {
     "id": 1,
-    "English_word": "changed",
-    "Japanese_word": "変更されました",
-    "level": 1
-  },
-  {
-    "id": 3,
     "English_word": "hello",
     "Japanese_word": "こんにちは",
     "level": 1
-  }
+  },
+  {
+    "id": 2,
+    "English_word": "world",
+    "Japanese_word": "世界",
+    "level": 2
+  },
 ]
 ```
 
@@ -77,8 +77,8 @@ http://127.0.0.1:8000/docs にアクセスすると、それぞれのAPIの動�
 - リクエストボディ例：
 ```
 {
-  "English_word": "changed",
-  "Japanese_word": "変更",
+  "English_word": "update",
+  "Japanese_word": "更新",
   "level": 1
 }
 ```
@@ -86,8 +86,8 @@ http://127.0.0.1:8000/docs にアクセスすると、それぞれのAPIの動�
 
 ```
 {
-  "English_word": "changed",
-  "Japanese_word": "変更されました",
+  "English_word": "update",
+  "Japanese_word": "更新",
   "level": 1,
   "id": 1
 }
