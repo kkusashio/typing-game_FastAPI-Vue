@@ -9,7 +9,13 @@ import api.schemas.word as word_schema
 
 async def get_all_word(db: AsyncSession) -> List[word_model.Word]:
     result= await db.execute(word_model.Word.__table__.select())
-    print(result)
+    return result.all()
+
+# ↓未完成、エラーが出る
+async def get_all_word_of_level_N(db: AsyncSession, level_num: int) -> List[word_model.Word]:
+    result = await db.execute(
+        select(word_model.Word).filter(word_model.Word.level == level_num)
+    )
     return result.all()
 
 async def create_word(

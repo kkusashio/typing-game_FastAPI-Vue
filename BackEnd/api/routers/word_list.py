@@ -1,4 +1,5 @@
 from typing import List
+import random
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -34,8 +35,18 @@ async def delete_word(word_id: int, db: AsyncSession = Depends(get_db)):
 
 @router.get("/word_list/set", response_model=List[word_schema.Word])
 async def get_word_list_set(word_num:int =5, word_level:int = -1, db: AsyncSession = Depends(get_db)):
-    all_words = await word_crud.get_all_word(db)
-    # word_numの数だけランダムに単語を取得
-    import random
+
+    # レベルの指定がない場合、全ての単語を対象とする
+    if word_level == -1:
+        all_words = await word_crud.get_all_word(db)
+    else:
+        # ↓未完成、エラーが出る
+        all_words = await word_crud.get_all_word_of_level_N(db, word_level)
+
+    # 単語数が単語リストの数より多い場合、単語リストの数を単語数とする
+    if word_num > len(all_words):
+        word_num = len(all_words)
+
+    # 単語リストから単語数分の単語をランダムに選択する
     word_list = random.sample(all_words, word_num)
     return word_list
