@@ -2,3 +2,6 @@ uvicorn
 fastapi
 sqlalchemy
 aiomysql
+openpyxl
+pandas
+requests

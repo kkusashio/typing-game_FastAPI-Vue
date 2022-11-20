@@ -16,6 +16,7 @@ services:
     
   # mysql
   db:
+    container_name: "db"
     image: mysql:8.0
     # platform: linux/x86_64  # M1 Macの場合必要
     environment:
