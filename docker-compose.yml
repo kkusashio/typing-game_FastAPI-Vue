@@ -1,14 +1,20 @@
 version: "3.0"
 
 services:
+  # Frontend
+
+
   # FastAPI
   api:
     container_name: "api"
-    build: .
+    image: api_image
+    build:
+      context: ./BackEnd
+      dockerfile: ./Dockerfile
     restart: always
     tty: true
     volumes: 
-      - .:/app
+      - ./BackEnd:/app
     ports:
       - 8000:8000
     depends_on:

@@ -29,5 +29,5 @@ def add_word_from_xlsx(file_path: str) -> None:
 
 
 if __name__ == "__main__":
-    add_word_from_xlsx('./tmp/toeic990.xlsx')
-    # reset_database()
+    # add_word_from_xlsx('./tmp/toeic990.xlsx')
+    reset_database()
