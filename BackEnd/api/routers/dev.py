@@ -9,17 +9,28 @@ import api.cruds.word as word_crud
 
 router = APIRouter()
 
+from api.models.word import Base
+from sqlalchemy import create_engine
 @router.delete("/dev/init_db", response_model=None)
 async def init_db():
     try:
-        from api.models.word import Base
-        from sqlalchemy import create_engine
-
-        DB_URL = "mysql+pymysql://root@db:3306/demo?charset=utf8"
-        engine = create_engine(DB_URL, echo=True)
-        Base.metadata.drop_all(bind=engine)
-        Base.metadata.create_all(bind=engine)
-        return None
+        from utils import reset_database
+        reset_database()
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+from fastapi import UploadFile, File
+@router.post('/dev/upload_xmls', response_model=None)
+def get_excel_file(upload_file: UploadFile = File(...)):
+    try:
+        # ファイルを/tmpに保存
+        with open('/tmp/' + upload_file.filename, 'wb') as f:
+            f.write(upload_file.file.read())
+
+        # ファイルを読み込んで、DBに登録
+        from utils import add_word_from_xlsx
+        add_word_from_xlsx('/tmp/' + upload_file.filename)
+
+        return None
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))

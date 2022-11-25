@@ -5,3 +5,4 @@ aiomysql
 openpyxl
 pandas
 requests
+python-multipart
