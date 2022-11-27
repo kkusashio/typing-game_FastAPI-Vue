@@ -13,7 +13,7 @@ class User(Base):
     hashed_password = Column(String(128))
     is_active = Column(Boolean, default=True)
     rate = Column(Integer,default=1000)
-    selected_words=relationship(
+    words=relationship(
         "Word",
         secondary=user_word_map_table,
         back_populates="users"

@@ -52,9 +52,10 @@ async def create_user(user: user_schema.UserCreate, db: AsyncSession = Depends(g
     )
     return access_token
 
-# @router.get("/users/me/", response_model=user_schema.User)
-# async def read_users_me(current_user: user_schema.User = Depends(user_crud.get_current_active_user)):
-#     return current_user
+@router.get("/users/me/", response_model=user_schema.User)
+async def read_users_me(current_user: user_schema.User = Depends(user_crud.get_current_user),db: AsyncSession = Depends(get_db)):
+    user_crud.update_word_for_user(db=db,word_id=2,current_user=current_user)
+    return current_user
 
 
 # @router.get("/users/me/items/")

@@ -12,7 +12,7 @@ import api.models.user as user_model
 import api.schemas.user as user_schema
 from api.db import get_db
 from passlib import hash
-
+import api.cruds.word as user_crud
 # 本当は環境変数などに隠す？
 ALGORITHM = "HS256"
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
@@ -46,6 +46,7 @@ async def get_user_by_email(db, email: str):
         # select(user_model.User).filter(user_model.User.email == email)
     )
     result = result.first()
+    print("result",result)
     return result
 
 
@@ -54,7 +55,10 @@ async def get_user_by_username(db, username: str):
     result = await db.execute(
         user_model.User.__table__.select().filter(user_model.User.username == username)
     )
-    return result.first()
+    result = result.first()
+    print("result",result)
+    return result
+
 
 
 # パスワードとハッシュ化パスワードを確かめる関数
@@ -115,7 +119,7 @@ async def get_current_user(
         token_data = user_schema.TokenData(username=username)
     except JWTError:
         raise credentials_exception
-    user = get_user_by_email(db, username=token_data.username)
+    user = await get_user_by_username(db, username=token_data.username)
     if user is None:
         raise credentials_exception
     return user
