@@ -4,7 +4,8 @@ from sqlalchemy.orm import relationship
 from api.db import Base
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
-
+# 参考
+# https://muoilog.xyz/web-development/sqlalchemy-many-to-many-save/
 user_word_map_table=Table(
     "user_word_map",
     Base.metadata,
