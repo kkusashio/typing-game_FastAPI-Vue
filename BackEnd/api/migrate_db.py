@@ -1,6 +1,8 @@
 from sqlalchemy import create_engine
 
 from api.models.word import Base
+import api.models.user
+import api.models.user_word_map
 
 DB_URL = "mysql+pymysql://root@db:3306/demo?charset=utf8"
 engine = create_engine(DB_URL, echo=True)
