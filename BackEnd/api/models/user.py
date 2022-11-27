@@ -2,6 +2,7 @@ from sqlalchemy import Boolean, Column, Integer, String
 from sqlalchemy.orm import relationship
 # from pydantic import EmailStr, constr
 from api.db import Base
+from api.models.user_word_map import user_word_map_table
 
 class User(Base):
     __tablename__ = "users"
@@ -12,3 +13,8 @@ class User(Base):
     hashed_password = Column(String(128))
     is_active = Column(Boolean, default=True)
     rate = Column(Integer,default=1000)
+    selected_words=relationship(
+        "Word",
+        secondary=user_word_map_table,
+        back_populates="users"
+    )
