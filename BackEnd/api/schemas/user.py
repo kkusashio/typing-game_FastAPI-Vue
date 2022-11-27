@@ -1,5 +1,6 @@
 from pydantic import BaseModel, Field
-from typing import Union
+from typing import Union,List
+from api.schemas.word import Word
 
 class Token(BaseModel):
     access_token: str
@@ -22,6 +23,7 @@ class User(UserBase):
     username:str
     is_active:bool
     rate:int
+    seleted_words:List[Word]=[]
     class Config:
         orm_mode=True
 
