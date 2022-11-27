@@ -15,5 +15,5 @@ class Word(Base):
     users=relationship(
         "User",
         secondary=user_word_map_table,
-        back_populates="selected_words"
+        back_populates="words"
     )
