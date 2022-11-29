@@ -55,7 +55,7 @@ def create_user(user: user_schema.UserCreate, db: Session = Depends(get_db)):
     access_token = user_crud.create_access_token(
         data={"sub": user.username}, expires_delta=access_token_expires
     )
-    return access_token
+    return {"access_token": access_token, "token_type": "bearer"}
 
 
 @router.get("/users/me/", response_model=user_schema.User)
@@ -63,10 +63,23 @@ def read_users_me(
     current_user: user_schema.User = Depends(user_crud.get_current_user),
     db: Session = Depends(get_db),
 ):
-    user_crud.update_word_for_user(db=db, word_id=2, current_user=current_user)
     return current_user
 
+@router.delete("/users/me/words", status_code=204)
+def del_users_me_word(
+    word_id:int,
+    current_user: user_schema.User = Depends(user_crud.get_current_user),
+    db: Session = Depends(get_db),
+):
+    user_crud.delete_word_for_user(db,word_id=word_id,current_user=current_user)
 
+@router.post("/users/me/words", status_code=204)
+def del_users_me_word(
+    word_id:int,
+    current_user: user_schema.User = Depends(user_crud.get_current_user),
+    db: Session = Depends(get_db),
+):
+    user_crud.add_word_for_user(db,word_id=word_id,current_user=current_user)
 # @router.get("/users/me/items/")
 # async def read_own_items(current_user: user_schema.User = Depends(user_crud.get_current_active_user)):
 #     return [{"item_id": "Foo", "owner": current_user.username}]
