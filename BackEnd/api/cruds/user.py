@@ -1,7 +1,7 @@
 from sqlalchemy import select
-from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import Session
 from sqlalchemy.engine import Result
-from typing import List, Optional,Tuple
+from typing import List, Optional, Tuple
 from passlib.context import CryptContext
 from typing import Union
 from datetime import datetime, timedelta
@@ -13,6 +13,7 @@ import api.schemas.user as user_schema
 from api.db import get_db
 from passlib import hash
 import api.cruds.word as user_crud
+
 # 本当は環境変数などに隠す？
 SECRET_KEY = "45d7a739ed783dba4638091687c49224dc1a9fc56d91135490094f2d9ac53869"
 ALGORITHM = "HS256"
@@ -20,58 +21,62 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 
 # Userのリストを返す関数
-async def get_users(db,skip:int=0,limit:int=100):
-    result= await db.execute(user_model.User.__table__.select().offset(skip).limit(limit))
-    return result.all()
+def get_users(db, skip: int = 0, limit: int = 100):
+    result = db.query(user_model.User).offset(skip).limit(limit).all()
+    print(result)
+    return result
+
 
 # Userを登録する関数
-async def create_user(db: AsyncSession,user:user_schema.UserCreate):
-    db_user=user_model.User(email=user.email,hashed_password=hash.bcrypt.hash(user.password),username=user.username)
+def create_user(db: Session, user: user_schema.UserCreate):
+    db_user = user_model.User(
+        email=user.email,
+        hashed_password=hash.bcrypt.hash(user.password),
+        username=user.username,
+    )
     db.add(db_user)
-    await db.commit()
-    await db.refresh(db_user)
+    db.commit()
+    db.refresh(db_user)
     return db_user
 
+
 # Userをemailから取得する関数
-async def get_user_by_email(db, email: str):
-    result =await db.execute(
-        user_model.User.__table__.select().filter(user_model.User.email == email)
-        # select(user_model.User).filter(user_model.User.email == email)
-    )
-    result = result.first()
-    # print("result",result)
+def get_user_by_email(email: str, db: Session = Depends(get_db)):
+    result = db.query(user_model.User).filter(user_model.User.email == email).first()
     return result
+
 
 # Userをusernameから取得する関数
-async def get_user_by_username(db, username: str):
-    result = await db.execute(
-        user_model.User.__table__.select().filter(user_model.User.username == username)
+def get_user_by_username(username: str, db: Session = Depends(get_db)):
+    result = (
+        db.query(user_model.User).filter(user_model.User.username == username).first()
     )
-    result = result.first()
-    # print("result",result)
-    # print(result.words)
     return result
 
+
 # パスワードとハッシュ化パスワードを確かめる関数
-def verify_password(plain_password, hashed_password)->bool:
+def verify_password(plain_password, hashed_password) -> bool:
     return hash.bcrypt.verify(plain_password, hashed_password)
+
 
 # ハッシュ化する関数
 def get_password_hash(password):
     return hash.bcrypt.hash(password)
 
-# usernameとパスワードからユーザーを返す関数  
-async def authenticate_user(
-        db: AsyncSession,
-        username: str,
-        password: str,
-        ):
-    user = await get_user_by_username(db, username)
+
+# usernameとパスワードからユーザーを返す関数
+def authenticate_user(
+    db: Session,
+    username: str,
+    password: str,
+):
+    user = get_user_by_username(username,db)
     if not user:
         return False
     if not verify_password(password, user.hashed_password):
         return False
     return user
+
 
 # def get_user(db, username: str):
 #     if username in db:
@@ -89,8 +94,11 @@ def create_access_token(data: dict, expires_delta: Union[timedelta, None] = None
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
 
+
 # 現在のユーザを返す関数
-async def get_current_user(token: str = Depends(oauth2_scheme),db:AsyncSession=Depends(get_db)):
+def get_current_user(
+    token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)
+):
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
@@ -104,25 +112,26 @@ async def get_current_user(token: str = Depends(oauth2_scheme),db:AsyncSession=D
         token_data = user_schema.TokenData(username=username)
     except JWTError:
         raise credentials_exception
-    user = await get_user_by_username(db, username=token_data.username)
+    user = get_user_by_username(username=token_data.username,db=db)
     if user is None:
         raise credentials_exception
     return user
 
-# async def get_current_active_user(current_user: user_schema.User = Depends(get_current_user)):
+
+# def get_current_active_user(current_user: user_schema.User = Depends(get_current_user)):
 #     print(current_user.disabled)
 #     if current_user.disabled:
 #         raise HTTPException(status_code=400, detail="Inactive user")
 #     return current_user
 
-#　WIP
+# 　WIP
 def update_word_for_user(
-    db: AsyncSession, 
+    db: Session,
     word_id: int,
-    current_user:user_schema.User,
-    ):
+    current_user: user_schema.User,
+):
     # print("db",db)
     # word=user_crud.get_word(db,1)
-    print(current_user.email)
-    selected_words = current_user.word_id
+    selected_words=current_user.words
+    # selected_words = current_user.words
     return selected_words
