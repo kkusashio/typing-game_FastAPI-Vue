@@ -46,7 +46,7 @@ async def get_user_by_email(db, email: str):
         # select(user_model.User).filter(user_model.User.email == email)
     )
     result = result.first()
-    print("result",result)
+    # print("result",result)
     return result
 
 
@@ -56,7 +56,8 @@ async def get_user_by_username(db, username: str):
         user_model.User.__table__.select().filter(user_model.User.username == username)
     )
     result = result.first()
-    print("result",result)
+    # print("result",result)
+    # print(result.words)
     return result
 
 
