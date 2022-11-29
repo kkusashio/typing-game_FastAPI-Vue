@@ -2,7 +2,7 @@ from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
 
 from api.db import Base
-from api.models.user_word_map import user_word_map_table
+from api.models.user_word_map import UserWordMap
 
 
 class Word(Base):
@@ -14,6 +14,6 @@ class Word(Base):
     level = Column(Integer, nullable=False)
     users=relationship(
         "User",
-        secondary=user_word_map_table,
+        secondary=UserWordMap.__tablename__,
         back_populates="words"
     )
