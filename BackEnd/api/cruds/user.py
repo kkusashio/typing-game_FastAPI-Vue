@@ -70,7 +70,7 @@ def authenticate_user(
     username: str,
     password: str,
 ):
-    user = get_user_by_username(username,db)
+    user = get_user_by_username(username, db)
     if not user:
         return False
     if not verify_password(password, user.hashed_password):
@@ -112,7 +112,7 @@ def get_current_user(
         token_data = user_schema.TokenData(username=username)
     except JWTError:
         raise credentials_exception
-    user = get_user_by_username(username=token_data.username,db=db)
+    user = get_user_by_username(username=token_data.username, db=db)
     if user is None:
         raise credentials_exception
     return user
@@ -124,14 +124,35 @@ def get_current_user(
 #         raise HTTPException(status_code=400, detail="Inactive user")
 #     return current_user
 
-# 　WIP
-def update_word_for_user(
+
+def delete_word_for_user(
     db: Session,
     word_id: int,
     current_user: user_schema.User,
 ):
-    # print("db",db)
-    # word=user_crud.get_word(db,1)
-    selected_words=current_user.words
-    # selected_words = current_user.words
-    return selected_words
+    
+    word = user_crud.get_word(db, word_id)
+    if word is None:
+        raise HTTPException(status_code=400, detail="Error: The word couldn't be found.")
+    try:
+        current_user.words.remove(word)
+    except:
+        raise HTTPException(status_code=400, detail="Error: The word was not in seleted_words.")
+    db.commit()
+    db.refresh(current_user)
+    return
+
+
+def add_word_for_user(
+    db: Session,
+    word_id: int,
+    current_user: user_schema.User,
+):
+    
+    word = user_crud.get_word(db, word_id)
+    if word is None:
+        raise HTTPException(status_code=400, detail="Error: The word couldn't be found")
+    current_user.words.append(word)
+    db.commit()
+    db.refresh(current_user)
+    return

@@ -24,4 +24,3 @@ class Word(WordCreateResponse):
     English_word: str = Field(..., example="hello", description="英単語")
     Japanese_word: str = Field(..., example="こんにちは", description="日本語訳")
     level: int = Field(..., ge=1, example=1, description="英単語のレベル")
-    users: Any

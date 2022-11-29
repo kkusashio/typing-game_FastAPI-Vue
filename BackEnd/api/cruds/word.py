@@ -28,7 +28,6 @@ def create_word(db: Session, word_create: word_schema.WordCreate) -> word_schema
 def get_word(db: Session, word_id: int) -> Optional[word_model.Word]:
     result: Result = db.query(word_model.Word).filter(word_model.Word.id == word_id)
     word: Optional[Tuple[word_model.Word]] = result.first()
-    print(word)
     return word if word else None
 
 
