@@ -39,7 +39,7 @@ async def get_user_by_email(db, email: str):
         # select(user_model.User).filter(user_model.User.email == email)
     )
     result = result.first()
-    print("result",result)
+    # print("result",result)
     return result
 
 # Userをusernameから取得する関数
@@ -48,7 +48,8 @@ async def get_user_by_username(db, username: str):
         user_model.User.__table__.select().filter(user_model.User.username == username)
     )
     result = result.first()
-    print("result",result)
+    # print("result",result)
+    # print(result.words)
     return result
 
 # パスワードとハッシュ化パスワードを確かめる関数
@@ -120,9 +121,8 @@ def update_word_for_user(
     word_id: int,
     current_user:user_schema.User,
     ):
-    # current_user.word.append(user_crud.get_word(db,1))
-    selected_words = current_user.users
-    print(selected_words)
-    # await db.commit()
-    # await db.refresh(word)
-    # return word
+    # print("db",db)
+    # word=user_crud.get_word(db,1)
+    print(current_user.email)
+    selected_words = current_user.word_id
+    return selected_words
