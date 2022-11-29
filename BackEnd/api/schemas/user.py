@@ -23,7 +23,7 @@ class User(UserBase):
     username:str
     is_active:bool
     rate:int
-    seleted_words:List[Word]=[]
+    words:List[Word]=[]
     class Config:
         orm_mode=True
 

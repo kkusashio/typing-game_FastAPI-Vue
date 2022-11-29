@@ -2,8 +2,7 @@ from sqlalchemy import Boolean, Column, Integer, String
 from sqlalchemy.orm import relationship
 # from pydantic import EmailStr, constr
 from api.db import Base
-from api.models.user_word_map import user_word_map_table
-
+from api.models.user_word_map import UserWordMap
 class User(Base):
     __tablename__ = "users"
 
@@ -15,6 +14,6 @@ class User(Base):
     rate = Column(Integer,default=1000)
     words=relationship(
         "Word",
-        secondary=user_word_map_table,
+        secondary=UserWordMap.__tablename__,
         back_populates="users"
     )
