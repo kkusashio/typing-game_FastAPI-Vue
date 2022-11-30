@@ -13,7 +13,7 @@ import api.schemas.user as user_schema
 from api.db import get_db
 from passlib import hash
 import api.cruds.word as user_crud
-
+from api.config import SECRET_KEY
 # 本当は環境変数などに隠す？
 ALGORITHM = "HS256"
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
