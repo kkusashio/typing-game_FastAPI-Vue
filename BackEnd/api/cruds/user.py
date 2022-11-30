@@ -14,17 +14,16 @@ from api.db import get_db
 from passlib import hash
 import api.cruds.word as user_crud
 from api.config import SECRET_KEY
+
 # 本当は環境変数などに隠す？
 ALGORITHM = "HS256"
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
-
 
 # Userのリストを返す関数
 def get_users(db, skip: int = 0, limit: int = 100):
     result = db.query(user_model.User).offset(skip).limit(limit).all()
     print(result)
     return result
-
 
 
 # Userを登録する関数
@@ -130,14 +129,18 @@ def delete_word_for_user(
     word_id: int,
     current_user: user_schema.User,
 ):
-    
+
     word = user_crud.get_word(db, word_id)
     if word is None:
-        raise HTTPException(status_code=400, detail="Error: The word couldn't be found.")
+        raise HTTPException(
+            status_code=400, detail="Error: The word couldn't be found."
+        )
     try:
         current_user.words.remove(word)
     except:
-        raise HTTPException(status_code=400, detail="Error: The word was not in seleted_words.")
+        raise HTTPException(
+            status_code=400, detail="Error: The word was not in seleted_words."
+        )
     db.commit()
     db.refresh(current_user)
     return
@@ -148,7 +151,7 @@ def add_word_for_user(
     word_id: int,
     current_user: user_schema.User,
 ):
-    
+
     word = user_crud.get_word(db, word_id)
     if word is None:
         raise HTTPException(status_code=400, detail="Error: The word couldn't be found")
