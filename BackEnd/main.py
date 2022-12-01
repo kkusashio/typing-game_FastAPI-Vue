@@ -1,10 +1,9 @@
 from fastapi import FastAPI
-from api.routers import word_list
+from api.routers import word_list,user
+from api.routers import dev
 
 app = FastAPI()
 
 app.include_router(word_list.router)
-
-@app.get("/hello")
-def read_root():
-    return {"Hello": "World"}
+app.include_router(dev.router)
+app.include_router(user.router)

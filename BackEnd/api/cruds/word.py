@@ -1,52 +1,50 @@
 from sqlalchemy import select
-from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.engine import Result
-from typing import List, Optional,Tuple
-
+from typing import List, Optional, Tuple
+from sqlalchemy.orm import Session
 import api.models.word as word_model
 import api.schemas.word as word_schema
 
 
-async def get_all_word(db: AsyncSession) -> List[word_model.Word]:
-    result= await db.execute(word_model.Word.__table__.select())
-    return result.all()
+def get_all_word(db: Session) -> List[word_model.Word]:
+    result = db.query(word_model.Word).all()
+    return result
+
 
 # ↓未完成、エラーが出る
-async def get_all_word_of_level_N(db: AsyncSession, level_num: int) -> List[word_model.Word]:
-    result = await db.execute(
-        select(word_model.Word).filter(word_model.Word.level == level_num)
-    )
-    return result.all()
+def get_all_word_of_level_N(db: Session, level_num: int) -> List[word_model.Word]:
+    result = db.query(word_model.Word).filter(word_model.Wrod.level == level_num).all()
+    return result
 
-async def create_word(
-    db: AsyncSession, word_create: word_schema.WordCreate
-) -> word_schema.Word:
+
+def create_word(db: Session, word_create: word_schema.WordCreate) -> word_schema.Word:
     word = word_model.Word(**word_create.dict())
     db.add(word)
-    await db.commit()
-    await db.refresh(word)
+    db.commit()
+    db.refresh(word)
     return word
 
-async def get_word(db: AsyncSession, word_id: int) -> Optional[word_model.Word]:
-    result: Result = await db.execute(
-        select(word_model.Word).filter(word_model.Word.id == word_id)
-    )
-    word: Optional[Tuple[word_model.Word]] = result.first()
-    return word[0] if word else None
 
-async def update_word(
-    db: AsyncSession, word_id: int, word_data: word_schema.WordCreate
+def get_word(db: Session, word_id: int) -> Optional[word_model.Word]:
+    result: Result = db.query(word_model.Word).filter(word_model.Word.id == word_id)
+    word: Optional[Tuple[word_model.Word]] = result.first()
+    return word if word else None
+
+
+def update_word(
+    db: Session, word_id: int, word_data: word_schema.WordCreate
 ) -> word_schema.Word:
-    word = await db.get(word_model.Word, word_id)
+    word = db.get(word_model.Word, word_id)
     word.English_word = word_data.English_word
     word.Japanese_word = word_data.Japanese_word
     word.level = word_data.level
-    await db.commit()
-    await db.refresh(word)
+    db.commit()
+    db.refresh(word)
     return word
 
-async def delete_word(db: AsyncSession, word_id: int) -> None:
-    word = await db.get(word_model.Word, word_id)
-    await db.delete(word)
-    await db.commit()
+
+def delete_word(db: Session, word_id: int) -> None:
+    word = db.get(word_model.Word, word_id)
+    db.delete(word)
+    db.commit()
     return
