@@ -9,12 +9,12 @@ services:
       context: ./front-end
       dockerfile: ./Dockerfile
     volumes:
-      - ./front-end:/work
+      - ./front-end:/src
     ports:
       - 8080:8080
     depends_on:
       - api
-    command : "yarn install && yarn serve"
+    tty: true
 
   # FastAPI
   api:
