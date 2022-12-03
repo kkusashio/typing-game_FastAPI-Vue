@@ -2,7 +2,19 @@ version: "3.0"
 
 services:
   # Frontend
-
+  frontend:
+    container_name: "frontend"
+    image: frontend_api_image
+    build: 
+      context: ./front-end
+      dockerfile: ./Dockerfile
+    volumes:
+      - ./front-end:/work
+    ports:
+      - 8080:8080
+    depends_on:
+      - api
+    command : "yarn install && yarn serve"
 
   # FastAPI
   api:
