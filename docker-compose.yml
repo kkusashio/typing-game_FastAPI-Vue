@@ -15,6 +15,16 @@ services:
     depends_on:
       - api
     tty: true
+    entrypoint: 
+      - /bin/sh
+      
+    command:
+     - -c
+     - |
+        [ -f ./.exec-once ] || {
+          yarn install && touch ./.exec-once
+        }
+        yarn serve
 
   # FastAPI
   api:
