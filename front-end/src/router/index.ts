@@ -20,6 +20,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/test',
     name: 'test',
     component: TestPage
+  },
+  {
+    path: '/user',
+    name: 'user',
+    component: TestPage
   }
 ]
 
