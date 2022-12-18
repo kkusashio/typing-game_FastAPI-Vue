@@ -1,20 +1,32 @@
 <template>
   <v-app>
+    <Header v-bind:isLogin="isLogin" />
     <v-main>
-      <router-view/>
+      <router-view v-on:change-login="changeLogin"/>
     </v-main>
+    <Footer v-bind:isLogin="isLogin" />
   </v-app>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import Header from './components/HeaderBar.vue'
+import Footer from './components/FooterBar.vue'
 
 export default defineComponent({
   name: 'App',
-
-  data () {
+  components: {
+    Header,
+    Footer
+  },
+  data() {
     return {
-      //
+      isLogin: false
+    }
+  },
+  methods: {
+    changeLogin: function (val:boolean) {
+      this.isLogin = val
     }
   },
 })
