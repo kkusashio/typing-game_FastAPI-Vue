@@ -3,6 +3,19 @@
     <v-app>
         <v-card width="400" class="mx-auto mt-5">
             <v-card-title class="text-center">{{ title }}</v-card-title>
+            <v-card-text class="text-center">
+                <span class="text-center">Not registered yet ? </span>
+                <!-- <v-btn
+                    href="http://localhost:8080/signup"
+                    text
+                    color="link"
+                    min-height="20"
+                    class="x-small post-link align-center py-1 px-2"
+                >
+                <span class="text-left">signup</span>
+                </v-btn> -->
+                <a href="http://localhost:8080/signup">signup</a>
+            </v-card-text>
             <v-form style="width:380px">
                 <v-text-field variant="outlined" density="comfortable" prepend-icon="mdi-account-circle"
                     label="username" v-model="username" />
@@ -64,4 +77,14 @@ export default {
 </script>
 
 <style scoped>
+.post-link {
+    display: inline-block;
+    word-break: break-all;
+    padding: 2px 8px;
+    border-radius: 5px;
+    text-transform: none !important;
+    white-space: normal;
+    max-width: calc(100% - 30px);
+    height: inherit !important;
+}
 </style>
