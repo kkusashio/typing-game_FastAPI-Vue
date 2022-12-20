@@ -9,7 +9,7 @@
         <v-icon color="#e1f223">fa-user</v-icon>
     </v-btn> -->
     <div v-if="isLogin" style="margin-left:20px">
-        <p>ログイン中</p>
+        <p>{{username}}</p>
     </div>
     <div style="margin-left:20px" v-else>Guest</div>
     <v-spacer></v-spacer>
@@ -31,10 +31,42 @@
 </template>
 
 <script lang="ts">
-export default {
+import axios from "axios";
+
+export default{
   props:['isLogin'],
-  methods: {},
-  data: () => ({ drawer: null }),
+  data() {
+    return {
+      drawer: false,
+      username: ""
+    }
+  },
+  watch: {
+    isLogin:function(){
+      const token = String(localStorage.token);
+      const URL = 'http://127.0.0.1:8000/users/me'
+      console.log(token)
+      let config = {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization:'Bearer '+token,
+        }
+      };
+      axios.get(URL, config)
+        .then((response) => {
+          console.log("response.data = ", response.data)
+          // 下がtypescriptの型チェックでエラーになります。助けてください。
+          // eslint-disable-next-line 
+          //@ts-ignore
+          this.username=response.data.username
+
+        })
+        .catch((err) => {
+          console.log("Error = ", err)
+        })
+    }
+    
+  },
 }
   
 </script>
