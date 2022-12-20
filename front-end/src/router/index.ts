@@ -1,6 +1,9 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import TestPage from '../views/TestPage.vue'
+import LoginPage from '../views/LoginView.vue'
+import LogoutPage from '../views/LogoutView.vue'
+import SignupPage from '../views/SignupView.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -20,7 +23,22 @@ const routes: Array<RouteRecordRaw> = [
     path: '/test',
     name: 'test',
     component: TestPage
-  }
+  },
+  {
+    path: '/user',
+    name: 'user',
+    component: LoginPage
+  },
+  {
+    path: '/logout',
+    name: 'logout',
+    component: LogoutPage
+  },
+  {
+    path: '/signup',
+    name: 'signup',
+    component: SignupPage
+  },
 ]
 
 const router = createRouter({

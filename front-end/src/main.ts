@@ -5,7 +5,7 @@ import vuetify from './plugins/vuetify'
 import { loadFonts } from './plugins/webfontloader'
 
 loadFonts()
-
+localStorage.setItem('token', '');
 createApp(App)
   .use(router)
   .use(vuetify)
