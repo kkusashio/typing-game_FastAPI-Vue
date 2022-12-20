@@ -3,7 +3,7 @@
     <v-app>
         <v-card width="400" class="mx-auto mt-5">
             <v-card-title class="text-center">{{ title }}</v-card-title>
-            <v-form style="width:380px">
+            <v-form class="centering-wmargin">
                 <v-text-field variant="outlined" density="comfortable" prepend-icon="mdi-account-circle"
                     label="username" v-model="username" />
                 <v-text-field variant="outlined" density="comfortable" prepend-icon="mdi-email" 
@@ -14,10 +14,10 @@
                 <v-text-field v-bind:type="showPassword ? 'text' : 'password'" variant="outlined" density="comfortable"
                     prepend-icon="mdi-lock" v-bind:append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'" label="confirm password"
                     @click:append="showPassword = !showPassword" v-model="password2" />
+                <v-card-text class="text-center" style="color:red">{{ errormessage }}</v-card-text>
                 <v-card-actions class="justify-center">
                     <v-btn variant="outlined" @click="doSignup">Signup</v-btn>
                 </v-card-actions>
-                <p class="text-center" color="red">{{ errormessage }}</p>
             </v-form>
             <!-- <p>Current token = {{ token }}</p> -->
         </v-card>
@@ -57,7 +57,6 @@ export default {
                     }
                 };
                 const URL = 'http://localhost:8000/users/'
-                console.log("aaaaaa")
                 axios.post(URL, params, config)
                     .then((response) => {
                         console.log("response.data = ", response.data)
@@ -73,7 +72,7 @@ export default {
                     })
                 
             } else { 
-                this.errormessage = "not match"
+                this.errormessage = "two passwords do not match"
             }
             
         }
@@ -83,5 +82,7 @@ export default {
 </script>
 
 <style scoped>
-
+.centering-wmargin {
+    margin: 15px;
+}
 </style>

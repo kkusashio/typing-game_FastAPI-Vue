@@ -16,12 +16,14 @@
                 </v-btn> -->
                 <a href="http://localhost:8080/signup">signup</a>
             </v-card-text>
-            <v-form style="width:380px">
+            <v-form class="centering-wmargin">
                 <v-text-field variant="outlined" density="comfortable" prepend-icon="mdi-account-circle"
                     label="username" v-model="username" />
                 <v-text-field v-bind:type="showPassword ? 'text' : 'password'" variant="outlined" density="comfortable"
                     prepend-icon="mdi-lock" v-bind:append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
                     label="password" @click:append="showPassword = !showPassword" v-model="password" />
+                <v-card-text class="text-center" style="color:red">{{ errorMessage }}</v-card-text>
+                <!-- <p>{{ errorMessage }}</p> -->
                 <v-card-actions class="justify-center">
                     <v-btn variant="outlined" @click="doLogin">Login</v-btn>
                 </v-card-actions>
@@ -43,6 +45,7 @@ export default {
             showPassword: false,
             username: "",
             password: "",
+            errorMessage:""
         }
     },
     methods: {
@@ -68,7 +71,8 @@ export default {
                     })
                 })
                 .catch((err) => {
-                    console.log("Error = ", err)
+                    this.errorMessage = "Incorrect username or password"
+                    console.log(this.errorMessage)
                 })
         }
     }
@@ -77,14 +81,7 @@ export default {
 </script>
 
 <style scoped>
-.post-link {
-    display: inline-block;
-    word-break: break-all;
-    padding: 2px 8px;
-    border-radius: 5px;
-    text-transform: none !important;
-    white-space: normal;
-    max-width: calc(100% - 30px);
-    height: inherit !important;
+.centering-wmargin {
+    margin: 15px;
 }
 </style>
