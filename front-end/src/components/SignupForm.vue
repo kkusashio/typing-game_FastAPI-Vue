@@ -44,14 +44,16 @@ export default {
     methods: {
         doSignup: function () {
             console.log("doSignup:: username=", this.username, " passowrd=", this.password,"email=",this.email)
-            const params = new URLSearchParams();
-            params.append('email', this.email);
-            params.append('username', this.username);   
-            params.append('password', this.password);
+
+            const params = {
+                "email": this.email,
+                "username": this.username,
+                "password": this.password
+            }
             if (this.password === this.password2) {
                 let config = {
                     headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded'
+                        'Content-Type': 'application/json'
                     }
                 };
                 const URL = 'http://localhost:8000/users/'

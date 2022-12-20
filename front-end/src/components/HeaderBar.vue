@@ -1,12 +1,17 @@
 <template>
+  <v-navigation-drawer v-model="drawer" app>
+    <p>ここはdrawer領域</p>
+    <p>スマホ用なのか？</p>
+  </v-navigation-drawer>
   <v-app-bar app color="#aaaaaa" dark flat class="px-8">
-    <v-btn icon>
+    <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+    <!-- <v-btn icon>
         <v-icon color="#e1f223">fa-user</v-icon>
-    </v-btn>
-    <div v-if="isLogin">
+    </v-btn> -->
+    <div v-if="isLogin" style="margin-left:20px">
         <p>ログイン中</p>
     </div>
-    <div v-else>ゲスト</div>
+    <div style="margin-left:20px" v-else>Guest</div>
     <v-spacer></v-spacer>
     <v-btn icon>
       <v-icon size="20">mdi-application-brackets</v-icon>
@@ -28,7 +33,8 @@
 <script lang="ts">
 export default {
   props:['isLogin'],
-  methods:{}
+  methods: {},
+  data: () => ({ drawer: null }),
 }
   
 </script>
