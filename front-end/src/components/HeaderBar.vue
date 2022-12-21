@@ -2,6 +2,16 @@
   <v-navigation-drawer v-model="drawer" app>
     <p>ここはdrawer領域</p>
     <p>スマホ用なのか？</p>
+    <v-card>
+      <div class="mxxxx">
+        <v-icon size="30">mdi-account-group</v-icon>
+        <router-link to="/user">
+          <span class="pagetag">Login</span>
+        </router-link>
+      </div>
+        
+    </v-card>
+    
   </v-navigation-drawer>
   <v-app-bar app color="#aaaaaa" dark flat class="px-8">
     <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
@@ -72,5 +82,16 @@ export default{
 </script>
 
 <style>
-
+.mxxxx {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.pagetag{
+  margin-left: 80px;
+  font-size:large;
+}
+a {
+  text-decoration: none;
+  color: #000;
+}
 </style>

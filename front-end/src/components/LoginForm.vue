@@ -72,7 +72,7 @@ export default {
                 })
                 .catch((err) => {
                     this.errorMessage = "Incorrect username or password"
-                    console.log(this.errorMessage)
+                    console.log(err)
                 })
         }
     }
