@@ -2,10 +2,10 @@
     <v-navigation-drawer v-model="drawer">
     <v-sheet color="grey-lighten-4" class="pa-4">
       <v-avatar class="mb-4" color="primary" size="64">
-        <span class="white--text text-h5">YK</span>
+        <span class="white--text text-h5">{{ username[0] }}</span>
       </v-avatar>
   
-      <div>yakolab.com</div>
+      <div>{{username}}</div>
     </v-sheet>
   
     <v-divider></v-divider>
@@ -15,7 +15,7 @@
         <template v-slot:prepend>
           <v-icon>{{ icon }}</v-icon>
         </template>
-        <a v-bind:href="link">
+        <a v-bind:href="link" class="black">
           <v-list-item-title to=''>{{ text }}</v-list-item-title>
         </a>
       </v-list-item>
@@ -42,7 +42,7 @@
       <v-icon size="20">mdi-account-group</v-icon>
     </v-btn>
     <v-divider vertical class="mx-md-5 mx-2"/>
-    <v-btn to="/about" icon>
+    <v-btn to="/" icon>
       <v-icon size="20">mdi-home</v-icon>
     </v-btn>
   </v-app-bar>
@@ -56,7 +56,7 @@ export default{
   data() {
     return {
       drawer: false,
-      username: "",
+      username: "Guest User",
       links: [
         ['mdi-home', 'Home', '/'],
         ['mdi-account-group', 'Login','/user'],
@@ -95,15 +95,7 @@ export default{
 </script>
 
 <style>
-.mxxxx {
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
-.pagetag{
-  margin-left: 80px;
-  font-size:large;
-}
-a {
+a.black {
   text-decoration: none;
   color: #000;
 }
