@@ -21,7 +21,7 @@
       </v-list-item>
     </v-list>
   </v-navigation-drawer>
-  <v-app-bar app color="#aaaaaa" dark flat class="px-8">
+  <v-app-bar app color="#008080" dark flat class="px-8">
     <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
     <!-- <v-btn icon>
         <v-icon color="#e1f223">fa-user</v-icon>
@@ -31,9 +31,9 @@
     </div>
     <div style="margin-left:20px" v-else><h3 class="font-weight-medium">Guest</h3></div>
     <v-spacer></v-spacer>
-    <v-btn icon>
+    <!-- <v-btn icon>
       <v-icon size="20">mdi-application-brackets</v-icon>
-    </v-btn>
+    </v-btn> -->
     
     <v-btn to="/logout" icon v-if="isLogin">
       <v-icon size="20">mdi-logout-variant</v-icon>

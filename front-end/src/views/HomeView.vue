@@ -15,14 +15,9 @@
       </v-container>
     </v-main>
   </v-app>
-  <TypingApp></TypingApp>
 </template>
 
-<script lang="ts">
-import TypingApp from '../components/TypingApp.vue'
-import { useRouter } from 'vue-router'
-const router = useRouter();
-console.log(router)
+<script>
 export default {
   name: "HomeView",
   data(){
@@ -34,12 +29,10 @@ export default {
       ],
    }
   },
-  components: {
-    TypingApp
-  },
   methods: {
     toType: function () {
-      router.push("/user")
+      // https://qiita.com/Engineer_Grotle/items/66d181309a779ce8a34a
+      this.$router.push({ name: "typing", query: { words: "TOEIC900"} })
     }
   }
 };

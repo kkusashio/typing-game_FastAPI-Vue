@@ -4,6 +4,7 @@ import TestPage from '../views/TestPage.vue'
 import LoginPage from '../views/LoginView.vue'
 import LogoutPage from '../views/LogoutView.vue'
 import SignupPage from '../views/SignupView.vue'
+import TypingPage from '../views/TypingView.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -39,6 +40,11 @@ const routes: Array<RouteRecordRaw> = [
     name: 'signup',
     component: SignupPage
   },
+  {
+    path: '/typing',
+    name: 'typing',
+    component: TypingPage,
+  }
 ]
 
 const router = createRouter({

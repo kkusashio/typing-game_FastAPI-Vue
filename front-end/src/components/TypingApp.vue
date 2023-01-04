@@ -3,9 +3,9 @@
         <v-card width="400" height="200" class="mx-auto mt-5 ">
             <div class="center">
                 <div v-if="playing">
-                    <h2>
+                    <h1>
                         <span>{{ pressed }}</span>{{ word }}
-                    </h2>
+                    </h1>
                     <br>
                     <h2>{{ word_jpn }}</h2>
                 </div>
@@ -117,6 +117,6 @@ span {
 }
 .btn_blur{
     /* color: blue; */
-    background-color: beige;
+    background-color: #96dccb;
 }
 </style>
