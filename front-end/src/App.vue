@@ -1,10 +1,11 @@
 <template>
   <v-app>
-    <Header v-bind:isLogin="isLogin" />
-    <v-main>
-      <router-view v-on:change-login="changeLogin"/>
-    </v-main>
-    <Footer v-bind:isLogin="isLogin" />
+      
+        <Header v-bind:isLogin="isLogin" />
+        <v-main>
+            <router-view v-on:change-login="changeLogin" />
+        </v-main>
+        <Footer v-bind:isLogin="isLogin" />
   </v-app>
 </template>
 
@@ -31,3 +32,6 @@ export default defineComponent({
   },
 })
 </script>
+<style scoped>
+
+</style>

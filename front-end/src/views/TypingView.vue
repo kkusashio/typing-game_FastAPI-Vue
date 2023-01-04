@@ -1,6 +1,6 @@
 <template>
     <v-app>
-        <h1>{{ words }}</h1>
+        <h1 class="center">{{ words }}</h1>
         <TypingApp></TypingApp>
 
     </v-app>
@@ -26,4 +26,8 @@ export default {
 </script>
 
 <style>
+.center {
+    text-align: center;
+    margin-top: 20px;
+}
 </style>
