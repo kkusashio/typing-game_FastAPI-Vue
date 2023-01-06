@@ -57,4 +57,14 @@ export default {
   background-size: cover;
   background-image: url("~@/assets/newspaper.jpg");
 }
+.bottom-enter-active,
+.bottom-leave-active {
+  transform: translate(0px, 0px);
+  transition: transform 225ms cubic-bezier(0, 0, 0.2, 1) 0ms;
+}
+
+.bottom-enter,
+.bottom-leave-to {
+  transform: translateY(100vh) translateY(0px);
+}
 </style>
