@@ -1,6 +1,6 @@
 <template>
     <div>
-      <v-card tile flat class="pa-md-10 pa-5 text-center" color="surface">
+      <v-card tile flat class="pa-md-5 pa-5 text-center" color="#008080">
         <h2 class="text-md-h6 font-weight-bold">Contact Us</h2>
         <br />
         <div class="text-center">

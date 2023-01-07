@@ -2,29 +2,29 @@ version: "3.0"
 
 services:
   # Frontend
-  frontend:
-    container_name: "frontend"
-    image: frontend_api_image
-    build: 
-      context: ./front-end
-      dockerfile: ./Dockerfile
-    volumes:
-      - ./front-end:/src
-    ports:
-      - 8080:8080
-    depends_on:
-      - api
-    tty: true
-    entrypoint: 
-      - /bin/sh
+  # frontend:
+  #   container_name: "frontend"
+  #   image: frontend_api_image
+  #   build: 
+  #     context: ./front-end
+  #     dockerfile: ./Dockerfile
+  #   volumes:
+  #     - ./front-end:/src
+  #   ports:
+  #     - 8080:8080
+  #   depends_on:
+  #     - api
+  #   tty: true
+  #   entrypoint: 
+  #     - /bin/sh
       
-    command:
-     - -c
-     - |
-        [ -f ./.exec-once ] || {
-          yarn install && touch ./.exec-once
-        }
-        yarn serve
+  #   command:
+  #    - -c
+  #    - |
+  #       [ -f ./.exec-once ] || {
+  #         yarn install && touch ./.exec-once
+  #       }
+  #       yarn serve
 
   # FastAPI
   api:

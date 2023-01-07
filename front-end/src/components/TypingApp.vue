@@ -1,30 +1,53 @@
 <template>
-    <v-app>
-        <v-card width="400" height="200" class="mx-auto mt-5 ">
+    <v-app class="typing-bg">
+        <v-card width="400" height="200" class="mx-auto mt-5">
             <div class="center">
-                <div v-if="playing">
+                <div v-if="playing==0">
+                    <v-card-actions class="justify-center">
+                        <v-btn v-on:click.once="doStart">
+                            <h2>Start</h2>
+                        </v-btn>
+                    </v-card-actions>
+                </div>
+                <div v-else-if="playing==1">
                     <h1>
                         <span>{{ pressed }}</span>{{ word }}
                     </h1>
                     <br>
                     <h2>{{ word_jpn }}</h2>
+                    <v-progress-linear v-bind:model-value="percent_now" class="progress_bar"></v-progress-linear>
                 </div>
-                <div v-else>
-                    <v-card-actions class="justify-center">
-                        <v-btn class="btn_blur" variant="outlined" v-on:click.once="doStart"><h2>Start</h2></v-btn>
-                    </v-card-actions>
+                <div v-else-if="playing==2">
+                    <h1>FINISH</h1>
                 </div>
-
-                <p v-if="playing" style="text-align: right;margin-right: 5px;">{{ idx_now }}枚目</p>
-                
             </div>
-        </v-card>         
+                    
+        </v-card>  
+        <div v-if="playing==2">
+            <v-sheet class="sheet">
+                <v-container>
+                    <v-row class="ma-8">
+                        <transition-group name="list">
+                            <v-col v-for="(item,index) in words" :key="item" class="list-item" cols="2">
+                                <v-card height="150" class="ma-8" color="">
+                                    <h2 class="text-center inner-center">{{item}}</h2>
+                                    <h3 class="text-center inner-center">{{words_jpn[index]}}</h3>
+                                </v-card>
+                            </v-col>
+                        </transition-group>
+                    </v-row>
+                </v-container>
+            </v-sheet>
+            
+        </div>       
     </v-app>
     
 </template>
 
 <script>
+import axios from 'axios'
 export default {
+    props:["level"],
     data() {
         return {
             words: ['apple', 'banana', 'grape'],
@@ -33,16 +56,40 @@ export default {
             word: '',
             pressed: '',
             miss: 0,
-            playing: false,
-            idx_now:0,
+            playing: 0,
+            idx_now: 0,
+            percent_now:0,
         };
+    },
+    mounted() {
+        const URL = 'http://localhost:8000/word_list/set'
+            axios.get(URL, {
+                params: {
+                "word_num": 10,
+                "word_level":this.level
+                }
+            })
+                .then((response) => {
+                    console.log(response.data[0]["English_word"])
+                    this.words = response.data.map(function (item) {
+                        return item["English_word"]
+                    })
+                    this.words_jpn=response.data.map(function (item) {
+                        return item["Japanese_word"]
+                    })
+                })
+                .catch((err) => {
+                    console.log(err)
+                })
     },
     methods: {
         doStart() {
             if (this.playing) {
                 return;
             }
-            this.playing = true;
+            // console.log("level",this.level)
+            
+            this.playing = 1;
             this.idx = this.shuffleIdx();
             this.idx_now = 0;
             this.setWord();
@@ -52,12 +99,13 @@ export default {
             this.word = this.words[this.idx[this.idx_now]];
             this.word_jpn = this.words_jpn[this.idx[this.idx_now]];
             this.pronounce()
-            console.log(this.idx_now)
+            // console.log(this.idx_now)
             this.idx_now += 1;
+            this.percent_now = Math.round(this.idx_now / this.words.length * 100);
+            console.log(this.percent_now)
         },
         keyDown() {
             addEventListener('keydown', (e) => {
-                console.log(this.word)
                 if (e.key !== this.word[0]) {
                     return;
                 }
@@ -68,7 +116,7 @@ export default {
                     if (this.idx_now === this.words.length) {
                         this.word = 'FINISH';
                         this.word_jpn = "";
-                        this.playing = false
+                        this.playing = 2
                         return;
                     }
                     this.setWord();
@@ -81,7 +129,6 @@ export default {
                 let rand = Math.floor(Math.random() * (i + 1));
                 [array[i], array[rand]] = [array[rand], array[i]]
             }
-            console.log(array)
             return array;
         },
         pronounce() {
@@ -108,9 +155,7 @@ export default {
     color: #2c3e50;
     margin-top: 60px;
 }
-.gray{
-    background-color: rgb(118, 112, 118);
-}
+
 span {
     color:blue; 
     opacity: 0.8;
@@ -118,5 +163,16 @@ span {
 .btn_blur{
     /* color: blue; */
     background-color: #96dccb;
+}
+.progress_bar{
+    color:rgb(25, 171, 115);
+    margin-top:20px;
+}
+.inner-center {
+  margin-top: 30px;
+}
+.sheet{
+    margin: 100px;
+    background-color:rgb(231, 225, 227)
 }
 </style>
