@@ -15,8 +15,8 @@ def reset_database():
 def add_word_from_xlsx(file_path: str) -> None:
     df = pandas.read_excel(file_path)
     for index, row in df.iterrows():
-        if (index == 10):
-            break
+        # if (index == 10):
+        #     break
         english_word = row['eng']
         japanese_word = row['jpn']
         level = 5

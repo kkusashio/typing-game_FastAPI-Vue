@@ -5,15 +5,6 @@
             <v-card-title class="text-center">{{ title }}</v-card-title>
             <v-card-text class="text-center">
                 <span class="text-center">Not registered yet ? </span>
-                <!-- <v-btn
-                    href="http://localhost:8080/signup"
-                    text
-                    color="link"
-                    min-height="20"
-                    class="x-small post-link align-center py-1 px-2"
-                >
-                <span class="text-left">signup</span>
-                </v-btn> -->
                 <a href="http://localhost:8080/signup">signup</a>
             </v-card-text>
             <v-form class="centering-wmargin">
@@ -72,7 +63,7 @@ export default {
                 })
                 .catch((err) => {
                     this.errorMessage = "Incorrect username or password"
-                    console.log(this.errorMessage)
+                    console.log(err)
                 })
         }
     }

@@ -13,7 +13,7 @@ def get_all_word(db: Session) -> List[word_model.Word]:
 
 # ↓未完成、エラーが出る
 def get_all_word_of_level_N(db: Session, level_num: int) -> List[word_model.Word]:
-    result = db.query(word_model.Word).filter(word_model.Wrod.level == level_num).all()
+    result = db.query(word_model.Word).filter(word_model.Word.level == level_num).all()
     return result
 
 
