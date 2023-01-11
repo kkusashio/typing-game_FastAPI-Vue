@@ -24,7 +24,7 @@
           ></v-progress-linear>
         </div>
         <div v-else-if="playing == 2">
-          <h1>FINISH</h1>
+          <h1 class="center">FINISH</h1>
         </div>
       </div>
     </v-card>
@@ -37,7 +37,7 @@
                 v-for="(item, index) in words"
                 :key="item"
                 class="list-item"
-                cols="2"
+                cols="3"
               >
                 <v-card height="150" class="ma-8" color="">
                   <h2 class="text-center inner-center">{{ item }}</h2>
@@ -66,7 +66,7 @@ export default {
       word: "",
       pressed: "",
       miss: 0,
-      playing: 0,
+      playing: 2, // 0:before 1:ongoing 2:after
       idx_now: 0,
       percent_now: 0,
     };
