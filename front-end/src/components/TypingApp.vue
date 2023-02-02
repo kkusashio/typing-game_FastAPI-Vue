@@ -56,6 +56,7 @@
             </transition-group>
           </v-row>
         </v-container>
+        <v-btn v-on:click="register">register</v-btn>
       </v-sheet>
       <p>{{ this.words_id_weak }}</p>
     </div>
@@ -166,6 +167,32 @@ export default {
         sound.rate = 1.0;
         speechSynthesis.speak(sound);
       }
+    },
+    register() {
+      const token = String(localStorage.token);
+      const URL = "http://localhost:8000/users/me/words";
+      console.log(token);
+      const params = new URLSearchParams();
+      params.append("word_id", 2);
+      let config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+        params,
+      };
+
+      // const params : {
+      //   word_id: 2,
+      // };
+      axios
+        .post(URL, params, config)
+        .then((response) => {
+          console.log(response.data);
+        })
+        .catch((err) => {
+          console.log("Error:", err);
+        });
     },
     debug() {
       console.log(this.words_id_weak);
