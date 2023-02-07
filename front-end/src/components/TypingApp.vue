@@ -77,7 +77,7 @@ export default {
       word: "",
       pressed: "",
       miss: 0,
-      playing: , // 0:before 1:ongoing 2:after
+      playing: 0, // 0:before 1:ongoing 2:after
       idx_now: 0,
       percent_now: 0,
       aaa: [],
