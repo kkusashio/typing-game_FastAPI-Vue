@@ -4,7 +4,7 @@
       <div>
         <div v-if="playing == 0" class="center">
           <v-card-actions class="justify-center">
-            <v-btn v-on:click.once="doStart">
+            <v-btn v-on:click.once="doStart" style="margin-top: 40px">
               <h2>Start</h2>
             </v-btn>
           </v-card-actions>
@@ -12,8 +12,8 @@
         <div v-else-if="playing == 1">
           <v-sheet class="dark-center">
             <h1 class="word center">
-                    <span>{{ pressed }}</span
-                    >{{ word }}
+              <span>{{ pressed }}</span
+              >{{ word }}
             </h1>
           </v-sheet>
           <br />
@@ -24,7 +24,7 @@
           ></v-progress-linear>
         </div>
         <div v-else-if="playing == 2">
-          <h1>FINISH</h1>
+          <h1 class="center" style="margin-top: 80px">FINISH</h1>
         </div>
       </div>
     </v-card>
@@ -37,19 +37,28 @@
                 v-for="(item, index) in words"
                 :key="item"
                 class="list-item"
-                cols="2"
+                cols="3"
               >
-                <v-card height="150" class="ma-8" color="">
+                <v-card height="170" class="ma-8" color="">
                   <h2 class="text-center inner-center">{{ item }}</h2>
                   <h3 class="text-center inner-center">
                     {{ words_jpn[index] }}
                   </h3>
+                  <v-switch
+                    v-model="words_id_weak"
+                    color="primary"
+                    v-bind:value="words_id[index]"
+                    class="switch"
+                  >
+                  </v-switch>
                 </v-card>
               </v-col>
             </transition-group>
           </v-row>
         </v-container>
+        <v-btn v-on:click="register">register</v-btn>
       </v-sheet>
+      <p>{{ this.words_id_weak }}</p>
     </div>
   </v-app>
 </template>
@@ -62,13 +71,16 @@ export default {
     return {
       words: ["apple", "banana", "grape"],
       words_jpn: ["りんご", "バナナ", "ぶどう"],
+      words_id: [1, 2, 3],
+      words_id_weak: [],
       idx: [],
       word: "",
       pressed: "",
       miss: 0,
-      playing: 0,
+      playing: 2, // 0:before 1:ongoing 2:after
       idx_now: 0,
       percent_now: 0,
+      aaa: [],
     };
   },
   mounted() {
@@ -76,17 +88,19 @@ export default {
     axios
       .get(URL, {
         params: {
-          word_num: 10,
+          word_num: 5,
           word_level: this.level,
         },
       })
       .then((response) => {
-        console.log(response.data[0]["English_word"]);
         this.words = response.data.map(function (item) {
           return item["English_word"];
         });
         this.words_jpn = response.data.map(function (item) {
           return item["Japanese_word"];
+        });
+        this.words_id = response.data.map(function (item) {
+          return item["id"];
         });
       })
       .catch((err) => {
@@ -99,7 +113,8 @@ export default {
         return;
       }
       // console.log("level",this.level)
-
+      console.log(this.words);
+      console.log(this.words_id);
       this.playing = 1;
       this.idx = this.shuffleIdx();
       this.idx_now = 0;
@@ -109,11 +124,12 @@ export default {
     setWord() {
       this.word = this.words[this.idx[this.idx_now]];
       this.word_jpn = this.words_jpn[this.idx[this.idx_now]];
+      this.word_id = this.words_id[this.idx[this.idx_now]];
       this.pronounce();
       // console.log(this.idx_now)
       this.idx_now += 1;
       this.percent_now = Math.round((this.idx_now / this.words.length) * 100);
-      console.log(this.percent_now);
+      // console.log(this.percent_now);
     },
     keyDown() {
       addEventListener("keydown", (e) => {
@@ -151,6 +167,35 @@ export default {
         sound.rate = 1.0;
         speechSynthesis.speak(sound);
       }
+    },
+    register() {
+      const token = String(localStorage.token);
+      const URL = "http://localhost:8000/users/me/words";
+      console.log(token);
+      const params = new URLSearchParams();
+      params.append("word_id", 2);
+      let config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+        params,
+      };
+
+      // const params : {
+      //   word_id: 2,
+      // };
+      axios
+        .post(URL, params, config)
+        .then((response) => {
+          console.log(response.data);
+        })
+        .catch((err) => {
+          console.log("Error:", err);
+        });
+    },
+    debug() {
+      console.log(this.words_id_weak);
     },
   },
 };
@@ -196,10 +241,14 @@ span {
   margin-top: 10px;
   height: 120px;
   position: inherit;
-  overflow:hidden;
+  overflow: hidden;
 }
-.center-lr{
-    text-align: center;
-
+.center-lr {
+  text-align: center;
+}
+.switch {
+  /* display: flex;
+  justify-content: flex-end; */
+  margin-left: 85%;
 }
 </style>
