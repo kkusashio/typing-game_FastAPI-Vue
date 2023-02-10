@@ -22,7 +22,7 @@ export default defineComponent({
   },
   data() {
     return {
-      isLogin: false
+      isLogin: (String(localStorage.token).length)>1
     }
   },
   methods: {

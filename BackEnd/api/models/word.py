@@ -12,6 +12,7 @@ class Word(Base):
     English_word = Column(String(50), nullable=False)
     Japanese_word = Column(String(50), nullable=False)
     level = Column(Integer, nullable=False)
+    owner_id = Column(Integer, nullable=True)
     users = relationship(
         "User", secondary=UserWordMap.__tablename__, back_populates="words"
     )
