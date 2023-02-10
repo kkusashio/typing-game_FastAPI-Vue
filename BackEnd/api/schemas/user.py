@@ -13,7 +13,8 @@ class TokenData(BaseModel):
 
 
 class UserBase(BaseModel):
-    email: str
+    pass
+    # email: str
 
 
 class UserCreate(UserBase):

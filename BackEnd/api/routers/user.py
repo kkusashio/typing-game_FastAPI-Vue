@@ -45,9 +45,9 @@ def user_for_access_token(
 # 新しくユーザーを登録する
 @router.post("/users/")
 def create_user(user: user_schema.UserCreate, db: Session = Depends(get_db)):
-    db_user = user_crud.get_user_by_email(email=user.email, db=db)
-    if db_user:
-        raise HTTPException(status_code=400, detail="Email already registered")
+    # db_user = user_crud.get_user_by_email(email=user.email, db=db)
+    # if db_user:
+    #     raise HTTPException(status_code=400, detail="Email already registered")
     db_user = user_crud.get_user_by_username(username=user.username, db=db)
     if db_user:
         raise HTTPException(status_code=400, detail="Username already registered")

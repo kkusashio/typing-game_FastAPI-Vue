@@ -6,8 +6,8 @@
             <v-form class="centering-wmargin">
                 <v-text-field variant="outlined" density="comfortable" prepend-icon="mdi-account-circle"
                     label="username" v-model="username" />
-                <v-text-field variant="outlined" density="comfortable" prepend-icon="mdi-email" 
-                    label="mail-address" v-model="email" />
+                <!-- <v-text-field variant="outlined" density="comfortable" prepend-icon="mdi-email" 
+                    label="mail-address" v-model="email" /> -->
                 <v-text-field v-bind:type="showPassword ? 'text' : 'password'" variant="outlined" density="comfortable"
                     prepend-icon="mdi-lock" v-bind:append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
                     label="password" @click:append="showPassword = !showPassword" v-model="password" />
@@ -37,16 +37,16 @@ export default {
             username: "",
             password: "",
             password2: "",
-            email:"",
+            // email:"",
             errormessage:"",
         }
     },
     methods: {
         doSignup: function () {
-            console.log("doSignup:: username=", this.username, " passowrd=", this.password,"email=",this.email)
+            console.log("doSignup:: username=", this.username, " passowrd=", this.password)
 
             const params = {
-                "email": this.email,
+                // "email": this.email,
                 "username": this.username,
                 "password": this.password
             }

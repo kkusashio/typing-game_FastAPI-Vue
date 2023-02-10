@@ -29,7 +29,7 @@ def get_users(db, skip: int = 0, limit: int = 100):
 # Userを登録する関数
 def create_user(db: Session, user: user_schema.UserCreate):
     db_user = user_model.User(
-        email=user.email,
+        # email=user.email,
         hashed_password=hash.bcrypt.hash(user.password),
         username=user.username,
     )
@@ -40,9 +40,9 @@ def create_user(db: Session, user: user_schema.UserCreate):
 
 
 # Userをemailから取得する関数
-def get_user_by_email(email: str, db: Session = Depends(get_db)):
-    result = db.query(user_model.User).filter(user_model.User.email == email).first()
-    return result
+# def get_user_by_email(email: str, db: Session = Depends(get_db)):
+#     result = db.query(user_model.User).filter(user_model.User.email == email).first()
+#     return result
 
 
 # Userをusernameから取得する関数
