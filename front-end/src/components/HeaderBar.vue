@@ -26,6 +26,7 @@
     <!-- <v-btn icon>
         <v-icon color="#e1f223">fa-user</v-icon>
     </v-btn> -->
+
     <div v-if="isLogin" style="margin-left: 20px">
       <h3 class="font-weight-medium">{{ username }}</h3>
     </div>
@@ -36,7 +37,9 @@
     <!-- <v-btn icon>
       <v-icon size="20">mdi-application-brackets</v-icon>
     </v-btn> -->
-
+    <v-btn to="/register" icon style="margin-right: 10px">
+      <v-icon size="20">mdi-note-plus</v-icon>
+    </v-btn>
     <v-btn to="/logout" icon v-if="isLogin">
       <v-icon size="20">mdi-logout-variant</v-icon>
     </v-btn>
@@ -63,6 +66,7 @@ export default {
         ["mdi-home", "Home", "/"],
         ["mdi-account-group", "Login", "/user"],
         ["mdi-alphabetical-variant", "English", "/about"],
+        ["mdi-note-plus", "My Word", "/register"],
       ],
     };
   },

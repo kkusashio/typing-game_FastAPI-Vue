@@ -5,6 +5,7 @@ import LoginPage from '../views/LoginView.vue'
 import LogoutPage from '../views/LogoutView.vue'
 import SignupPage from '../views/SignupView.vue'
 import TypingPage from '../views/TypingView.vue'
+import RegisterPage from '../views/RegisterView.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -44,6 +45,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/typing',
     name: 'typing',
     component: TypingPage,
+  },
+  {
+    path: '/register',
+    name: 'register',
+    component:RegisterPage,
   }
 ]
 
