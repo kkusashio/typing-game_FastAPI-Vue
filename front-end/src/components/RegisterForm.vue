@@ -9,21 +9,21 @@
           density="comfortable"
           prepend-icon="mdi-alphabet-latin"
           label="英単語"
-          v-model="username"
+          v-model="word"
         />
         <v-text-field
           variant="outlined"
           density="comfortable"
           prepend-icon="mdi-ideogram-cjk-variant"
           label="意味"
-          v-model="password"
+          v-model="meaning"
         />
         <v-text-field
           variant="outlined"
           density="comfortable"
           prepend-icon="mdi-format-list-bulleted-type"
           label="レベル"
-          v-model="password"
+          v-model="level"
         />
         <!-- <v-text-field
           variant="outlined"
@@ -32,11 +32,18 @@
           label="レベル"
           v-model="password"
         /> -->
-        <v-card-text class="text-center" style="color: red">{{
-          errormessage
-        }}</v-card-text>
+        <v-card-text class="text-center" style="color: red">
+          <h3>
+            {{ errormessage }}
+          </h3></v-card-text
+        >
         <v-card-actions class="justify-center">
-          <v-btn variant="outlined" @click="doSignup">Signup</v-btn>
+          <v-btn
+            variant="outlined"
+            @click="doRegister"
+            v-bind:disabled="activateSubmit"
+            >Register</v-btn
+          >
         </v-card-actions>
       </v-form>
       <!-- <p>Current token = {{ token }}</p> -->
@@ -54,11 +61,21 @@ export default {
       title: "Register",
       word: "",
       meaning: "",
+      level: "",
+      owner_id: -1,
+      username: "",
       errormessage: "",
     };
   },
   methods: {
-    doSignup: function () {
+    doRegister: function () {
+      console.log(this.owner_id);
+      const params = {
+        English_word: this.word,
+        Japanese_word: this.meaning,
+        level: this.level,
+        owner_id: this.owner_id,
+      };
       // console.log("doSignup:: username=", this.username, " passowrd=", this.password)
       // const params = {
       //     // "email": this.email,
@@ -88,6 +105,40 @@ export default {
       // } else {
       //     this.errormessage = "two passwords do not match"
       // }
+    },
+  },
+  mounted: function () {
+    const token = String(localStorage.token);
+    const URL = "http://127.0.0.1:8000/users/me";
+    console.log(token);
+    let config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    };
+    axios
+      .get(URL, config)
+      .then((response) => {
+        console.log("response.data = ", response.data);
+        // 下がtypescriptの型チェックでエラーになります。助けてください。
+        // eslint-disable-next-line
+        //@ts-ignore
+        this.owner_id = response.data.id;
+        this.username = response.data.username;
+      })
+      .catch((err) => {
+        this.errormessage = "ログインしてください";
+      });
+  },
+  computed: {
+    activateSubmit() {
+      console.log(this.username);
+      if (this.username == "") {
+        return true;
+      } else {
+        return false;
+      }
     },
   },
 };
